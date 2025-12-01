@@ -139,7 +139,6 @@ ax.set_ylabel("Valores")
 st.pyplot(fig)
 
 st.subheader("Top 20 Trabajos con Mayor Probabilidad de Automatización")
-st.dataframe(top_20)  
 
 st.subheader("Eliminar trabajos de la tabla")
 trabajos_a_quitar = st.multiselect(
