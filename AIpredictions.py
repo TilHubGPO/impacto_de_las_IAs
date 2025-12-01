@@ -2,18 +2,12 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# -----------------------------
-# 1. Configuración de la página
-# -----------------------------
 st.set_page_config(
     page_title="Job Automation Dashboard",
     layout="wide"
 )
 
-# -----------------------------
-# 2. Título y descripción
-# -----------------------------
-st.title("Job Automation & Skills Dashboard")
+st.title("Impacto de las inteligencias artificiales en el campo laboral")
 st.markdown(
     """
 Esta aplicación permite explorar datos de trabajos, salarios, exposición a IA y habilidades.
@@ -21,21 +15,11 @@ Interactúa con los filtros y gráficos para descubrir insights sobre automatiza
 """
 )
 
-# -----------------------------
-# 3. Cargar CSV desde la misma carpeta
-# -----------------------------
 df = pd.read_csv("AI_Impact_on_Jobs_2030.csv")
 
-# -----------------------------
-# 4. Mostrar dataset
-# -----------------------------
 st.header("Dataset Overview")
 st.write(df.head())
 st.write(f"Total jobs: {df.shape[0]}, Total columns: {df.shape[1]}")
-
-# -----------------------------
-# 5. Filtros en sidebar
-# -----------------------------
 st.sidebar.header("Filtros Interactivos")
 education_options = df["Education_Level"].unique()
 selected_edu = st.sidebar.multiselect(
@@ -69,9 +53,6 @@ filtered_df = df[
 st.subheader("Datos filtrados")
 st.write(filtered_df)
 
-# -----------------------------
-# 6. Histogram: Automation Probability
-# -----------------------------
 st.header("Distribución de Probabilidad de Automatización 2030")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
@@ -82,9 +63,6 @@ ax.set_ylabel("Número de trabajos")
 ax.legend()
 st.pyplot(fig)
 
-# -----------------------------
-# 7. Scatter plot: Salary vs AI Exposure
-# -----------------------------
 st.header("Salario vs Exposición a IA")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
@@ -95,9 +73,6 @@ ax.set_ylabel("Average Salary (USD)")
 ax.legend()
 st.pyplot(fig)
 
-# -----------------------------
-# 8. Line plot: Tech Growth vs Automation
-# -----------------------------
 st.header("Crecimiento tecnológico vs Probabilidad de automatización")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
@@ -108,9 +83,6 @@ ax.set_ylabel("Automation Probability 2030")
 ax.legend()
 st.pyplot(fig)
 
-# -----------------------------
-# 9. Bar plot: Average Salary por Educación
-# -----------------------------
 st.header("Salario promedio por nivel educativo")
 avg_salary = filtered_df.groupby("Education_Level")["Average_Salary"].mean().sort_values()
 fig, ax = plt.subplots()
@@ -119,9 +91,6 @@ ax.set_ylabel("Average Salary (USD)")
 ax.set_xlabel("Education Level")
 st.pyplot(fig)
 
-# -----------------------------
-# 10. Box plot: Skills por Risk Category
-# -----------------------------
 st.header("Distribución de habilidades por categoría de riesgo")
 skill_cols = [col for col in df.columns if col.startswith("Skill_")]
 selected_skill = st.selectbox("Selecciona una skill para visualizar:", skill_cols)
@@ -134,9 +103,7 @@ ax.set_ylabel(selected_skill)
 ax.set_title(f"{selected_skill} por categoría de riesgo")
 st.pyplot(fig)
 
-# -----------------------------
-# 11. Comparación de dos trabajos
-# -----------------------------
+
 st.header("Comparación de dos trabajos")
 job1_col, job2_col = st.columns(2)
 
@@ -171,8 +138,6 @@ comparison_df.plot(x="Métrica", y=[job_a, job_b], kind="bar", ax=ax)
 ax.set_ylabel("Valores")
 st.pyplot(fig)
 
-# -----------------------------
-# 12. Mensaje final
-# -----------------------------
+
 st.info("Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
 st.markdown("App creada con Streamlit y Matplotlib para análisis interactivo de trabajos, salarios y habilidades.")
