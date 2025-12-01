@@ -148,10 +148,7 @@ trabajos_a_quitar = st.multiselect(
 )
 
 
-if trabajos_a_quitar:
-    tabla_filtrada = top_20[~top_20['Trabajo'].isin(trabajos_a_quitar)]
-else:
-    tabla_filtrada = top_20
+
 
 st.subheader("Tabla Actualizada")
 st.dataframe(tabla_filtrada)
