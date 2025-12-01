@@ -143,7 +143,7 @@ st.subheader("Top 20 Trabajos con Mayor Probabilidad de Automatización")
 st.subheader("Eliminar trabajos de la tabla")
 trabajos_a_quitar = st.multiselect(
     "Selecciona trabajos para eliminar de la tabla:",
-    top_20['Trabajo'].tolist()
+    ['Trabajo'].tolist()
 )
 
 
