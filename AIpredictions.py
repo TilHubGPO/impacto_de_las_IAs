@@ -22,9 +22,10 @@ Los gráficos son interactivos y muestran tendencias importantes para la automat
 )
 
 # -----------------------------
-# 3. Cargar CSV automáticamente
+# 3. Cargar CSV automáticamente desde GitHub
 # -----------------------------
-df = pd.read_csv("data.csv")  # Ajusta la ruta según tu repo
+url = "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/AI_Impact_on_Jobs_2030.csv"
+df = pd.read_csv(url)
 
 # -----------------------------
 # 4. Mostrar dataset
