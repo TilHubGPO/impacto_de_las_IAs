@@ -138,6 +138,20 @@ comparison_df.plot(x="Métrica", y=[job_a, job_b], kind="bar", ax=ax)
 ax.set_ylabel("Valores")
 st.pyplot(fig)
 
+st.subheader("Top 20 Trabajos con Mayor Probabilidad de Automatización")
+st.dataframe(top_20)  
 
-st.info("Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
-st.markdown("App creada con Streamlit y Matplotlib para análisis interactivo de trabajos, salarios y habilidades.")
+st.subheader("Eliminar trabajos de la tabla")
+trabajos_a_quitar = st.multiselect(
+    "Selecciona trabajos para eliminar de la tabla:",
+    top_20['Trabajo'].tolist()
+)
+
+
+if trabajos_a_quitar:
+    tabla_filtrada = top_20[~top_20['Trabajo'].isin(trabajos_a_quitar)]
+else:
+    tabla_filtrada = top_20
+
+st.subheader("Tabla Actualizada")
+st.dataframe(tabla_filtrada)
