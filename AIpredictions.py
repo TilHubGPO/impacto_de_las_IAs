@@ -7,14 +7,13 @@ import matplotlib.pyplot as plt
 # -----------------------------
 st.set_page_config(
     page_title="Job Analytics Dashboard",
-    layout="wide",
-    page_icon="💼"
+    layout="wide"
 )
 
 # -----------------------------
 # 2. Título y descripción
 # -----------------------------
-st.title("💼 Job Automation & Skills Dashboard")
+st.title("Job Automation & Skills Dashboard")
 st.markdown(
     """
 Esta aplicación permite explorar datos de trabajos, salarios, exposición a IA y habilidades.
@@ -25,24 +24,19 @@ Los gráficos son interactivos y muestran tendencias importantes para la automat
 # -----------------------------
 # 3. Cargar CSV automáticamente
 # -----------------------------
-# Opción 1: CSV en el mismo repositorio
-df = pd.read_csv("data.csv")
-
-# Opción 2 (alternativa): CSV desde GitHub raw
-# url = "https://raw.githubusercontent.com/usuario/repositorio/main/data.csv"
-# df = pd.read_csv(url)
+df = pd.read_csv("data.csv")  # Ajusta la ruta según tu repo
 
 # -----------------------------
 # 4. Mostrar dataset
 # -----------------------------
-st.header("📄 Dataset Overview")
+st.header("Dataset Overview")
 st.write(df.head())
 st.write(f"Total jobs: {df.shape[0]}, Total columns: {df.shape[1]}")
 
 # -----------------------------
 # 5. Sidebar: filtros interactivos
 # -----------------------------
-st.sidebar.header("📌 Filtros Interactivos")
+st.sidebar.header("Filtros Interactivos")
 
 education_options = df["Education_Level"].unique()
 selected_edu = st.sidebar.multiselect(
@@ -73,13 +67,13 @@ filtered_df = df[
     (df["Years_Experience"].between(selected_exp[0], selected_exp[1]))
 ]
 
-st.subheader("🎯 Datos filtrados")
+st.subheader("Datos filtrados")
 st.write(filtered_df)
 
 # -----------------------------
 # 6. Histogram: Automation Probability
 # -----------------------------
-st.header("🤖 Distribución de Probabilidad de Automatización 2030")
+st.header("Distribución de Probabilidad de Automatización 2030")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
     subset = filtered_df[filtered_df["Risk_Category"] == risk]
@@ -92,7 +86,7 @@ st.pyplot(fig)
 # -----------------------------
 # 7. Scatter plot: Salary vs AI Exposure
 # -----------------------------
-st.header("💰 Salario vs Exposición a IA")
+st.header("Salario vs Exposición a IA")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
     subset = filtered_df[filtered_df["Risk_Category"] == risk]
@@ -105,7 +99,7 @@ st.pyplot(fig)
 # -----------------------------
 # 8. Line plot: Tech Growth vs Automation
 # -----------------------------
-st.header("📈 Crecimiento tecnológico vs Probabilidad de automatización")
+st.header("Crecimiento tecnológico vs Probabilidad de automatización")
 fig, ax = plt.subplots()
 for risk in filtered_df["Risk_Category"].unique():
     subset = filtered_df[filtered_df["Risk_Category"] == risk].sort_values("Tech_Growth_Factor")
@@ -118,7 +112,7 @@ st.pyplot(fig)
 # -----------------------------
 # 9. Bar plot: Average Salary por Educación
 # -----------------------------
-st.header("📊 Salario promedio por nivel educativo")
+st.header("Salario promedio por nivel educativo")
 avg_salary = filtered_df.groupby("Education_Level")["Average_Salary"].mean().sort_values()
 fig, ax = plt.subplots()
 avg_salary.plot(kind="bar", ax=ax, color="skyblue")
@@ -127,14 +121,13 @@ ax.set_xlabel("Education Level")
 st.pyplot(fig)
 
 # -----------------------------
-# 10. Violin/Box plot: Skills por Risk Category
+# 10. Box plot: Skills por Risk Category
 # -----------------------------
-st.header("🧠 Distribución de habilidades por categoría de riesgo")
+st.header("Distribución de habilidades por categoría de riesgo")
 skill_cols = [col for col in df.columns if col.startswith("Skill_")]
 selected_skill = st.selectbox("Selecciona una skill para visualizar:", skill_cols)
 
 fig, ax = plt.subplots()
-# Crear boxplots simulando violin plots
 data_to_plot = [filtered_df[filtered_df["Risk_Category"]==risk][selected_skill] 
                 for risk in filtered_df["Risk_Category"].unique()]
 ax.boxplot(data_to_plot, labels=filtered_df["Risk_Category"].unique())
@@ -145,7 +138,7 @@ st.pyplot(fig)
 # -----------------------------
 # 11. Comparación de dos trabajos
 # -----------------------------
-st.header("🆚 Comparación de dos trabajos")
+st.header("Comparación de dos trabajos")
 job1_col, job2_col = st.columns(2)
 
 with job1_col:
@@ -171,7 +164,7 @@ comparison_df = pd.DataFrame({
     ]
 })
 
-st.subheader("📊 Tabla de comparación")
+st.subheader("Tabla de comparación")
 st.write(comparison_df)
 
 fig, ax = plt.subplots()
@@ -182,5 +175,5 @@ st.pyplot(fig)
 # -----------------------------
 # 12. Mensaje informativo final
 # -----------------------------
-st.info("💡 Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
-st.markdown("App creada con **Streamlit** y **Matplotlib** para análisis interactivo de trabajos, salarios y habilidades.")
+st.info("Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
+st.markdown("App creada con Streamlit y Matplotlib para análisis interactivo de trabajos, salarios y habilidades.")
