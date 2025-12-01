@@ -138,13 +138,22 @@ comparison_df.plot(x="Métrica", y=[job_a, job_b], kind="bar", ax=ax)
 ax.set_ylabel("Valores")
 st.pyplot(fig)
 
-st.subheader("Top 20 Trabajos con Mayor Probabilidad de Automatización")
+conteo_trabajos = df['Job'].value_counts()
 
-st.subheader("Eliminar trabajos de la tabla")
-trabajos_a_quitar = st.multiselect(
-    "Selecciona trabajos para eliminar de la tabla:",
-    ['Trabajo'].tolist()
+
+top_20 = conteo_trabajos.head(20).reset_index()
+top_20.columns = ['Trabajo', 'Cantidad']
+
+
+trabajos_a_excluir = st.multiselect(
+    "Seleccione trabajos a quitar del Top 20:",
+    options=top_20['Trabajo'].tolist()
 )
+
+top_20_filtrado = top_20[~top_20['Trabajo'].isin(trabajos_a_excluir)]
+
+
+st.dataframe(top_20_filtrado)
 
 
 
