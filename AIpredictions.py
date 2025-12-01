@@ -2,13 +2,11 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("AI_Impact_on_Jobs_2030.csv")
-
 # -----------------------------
 # 1. Configuración de la página
 # -----------------------------
 st.set_page_config(
-    page_title="Job Analytics Dashboard",
+    page_title="Job Automation Dashboard",
     layout="wide"
 )
 
@@ -19,15 +17,14 @@ st.title("Job Automation & Skills Dashboard")
 st.markdown(
     """
 Esta aplicación permite explorar datos de trabajos, salarios, exposición a IA y habilidades.
-Los gráficos son interactivos y muestran tendencias importantes para la automatización de empleos.
+Interactúa con los filtros y gráficos para descubrir insights sobre automatización y habilidades.
 """
 )
 
 # -----------------------------
-# 3. Cargar CSV automáticamente desde GitHub
+# 3. Cargar CSV desde la misma carpeta
 # -----------------------------
-url = "https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/AI_Impact_on_Jobs_2030.csv"
-df = pd.read_csv(url)
+df = pd.read_csv("AI_Impact_on_Jobs_2030.csv")
 
 # -----------------------------
 # 4. Mostrar dataset
@@ -37,10 +34,9 @@ st.write(df.head())
 st.write(f"Total jobs: {df.shape[0]}, Total columns: {df.shape[1]}")
 
 # -----------------------------
-# 5. Sidebar: filtros interactivos
+# 5. Filtros en sidebar
 # -----------------------------
 st.sidebar.header("Filtros Interactivos")
-
 education_options = df["Education_Level"].unique()
 selected_edu = st.sidebar.multiselect(
     "Filtrar por nivel educativo",
@@ -176,7 +172,7 @@ ax.set_ylabel("Valores")
 st.pyplot(fig)
 
 # -----------------------------
-# 12. Mensaje informativo final
+# 12. Mensaje final
 # -----------------------------
 st.info("Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
 st.markdown("App creada con Streamlit y Matplotlib para análisis interactivo de trabajos, salarios y habilidades.")
