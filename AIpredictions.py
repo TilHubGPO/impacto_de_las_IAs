@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # -----------------------------
 # 1. Configuración de la página
@@ -24,23 +23,27 @@ Los gráficos son interactivos y muestran tendencias importantes para la automat
 )
 
 # -----------------------------
-# 3. Cargar CSV directamente
+# 3. Cargar CSV automáticamente
 # -----------------------------
-df = pd.read_csv("data/data.csv")  # Cambiar ruta según tu repo
+# Opción 1: CSV en el mismo repositorio
+df = pd.read_csv("data.csv")
+
+# Opción 2 (alternativa): CSV desde GitHub raw
+# url = "https://raw.githubusercontent.com/usuario/repositorio/main/data.csv"
+# df = pd.read_csv(url)
 
 # -----------------------------
-# 4. Mostrar dataset completo
+# 4. Mostrar dataset
 # -----------------------------
 st.header("📄 Dataset Overview")
 st.write(df.head())
 st.write(f"Total jobs: {df.shape[0]}, Total columns: {df.shape[1]}")
 
 # -----------------------------
-# 5. Sidebar filters interactivos
+# 5. Sidebar: filtros interactivos
 # -----------------------------
 st.sidebar.header("📌 Filtros Interactivos")
 
-# Filtrar por Education Level
 education_options = df["Education_Level"].unique()
 selected_edu = st.sidebar.multiselect(
     "Filtrar por nivel educativo",
@@ -48,7 +51,6 @@ selected_edu = st.sidebar.multiselect(
     default=education_options
 )
 
-# Filtrar por Risk Category
 risk_options = df["Risk_Category"].unique()
 selected_risk = st.sidebar.multiselect(
     "Filtrar por categoría de riesgo",
@@ -56,7 +58,6 @@ selected_risk = st.sidebar.multiselect(
     default=risk_options
 )
 
-# Filtrar por años de experiencia (slider)
 min_exp = int(df["Years_Experience"].min())
 max_exp = int(df["Years_Experience"].max())
 selected_exp = st.sidebar.slider(
@@ -66,7 +67,6 @@ selected_exp = st.sidebar.slider(
     value=(min_exp, max_exp)
 )
 
-# Aplicar filtros
 filtered_df = df[
     (df["Education_Level"].isin(selected_edu)) &
     (df["Risk_Category"].isin(selected_risk)) &
@@ -127,19 +127,23 @@ ax.set_xlabel("Education Level")
 st.pyplot(fig)
 
 # -----------------------------
-# 10. Violin plot: Skills por Risk Category
+# 10. Violin/Box plot: Skills por Risk Category
 # -----------------------------
 st.header("🧠 Distribución de habilidades por categoría de riesgo")
 skill_cols = [col for col in df.columns if col.startswith("Skill_")]
 selected_skill = st.selectbox("Selecciona una skill para visualizar:", skill_cols)
 
 fig, ax = plt.subplots()
-sns.violinplot(x="Risk_Category", y=selected_skill, data=filtered_df, palette="Set2", ax=ax)
+# Crear boxplots simulando violin plots
+data_to_plot = [filtered_df[filtered_df["Risk_Category"]==risk][selected_skill] 
+                for risk in filtered_df["Risk_Category"].unique()]
+ax.boxplot(data_to_plot, labels=filtered_df["Risk_Category"].unique())
+ax.set_ylabel(selected_skill)
 ax.set_title(f"{selected_skill} por categoría de riesgo")
 st.pyplot(fig)
 
 # -----------------------------
-# 11. Columnas y comparación de trabajos
+# 11. Comparación de dos trabajos
 # -----------------------------
 st.header("🆚 Comparación de dos trabajos")
 job1_col, job2_col = st.columns(2)
@@ -170,14 +174,13 @@ comparison_df = pd.DataFrame({
 st.subheader("📊 Tabla de comparación")
 st.write(comparison_df)
 
-# Gráfico de barras comparativo
 fig, ax = plt.subplots()
 comparison_df.plot(x="Métrica", y=[job_a, job_b], kind="bar", ax=ax)
 ax.set_ylabel("Valores")
 st.pyplot(fig)
 
 # -----------------------------
-# 12. Información adicional y mensaje
+# 12. Mensaje informativo final
 # -----------------------------
 st.info("💡 Explora los filtros y gráficos para analizar tendencias y relaciones entre variables.")
-st.markdown("App creada con **Streamlit**, **Matplotlib** y **Seaborn** para análisis interactivo de trabajos, salarios y habilidades.")
+st.markdown("App creada con **Streamlit** y **Matplotlib** para análisis interactivo de trabajos, salarios y habilidades.")
